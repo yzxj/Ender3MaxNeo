@@ -407,7 +407,7 @@ void unified_bed_leveling::G29() {
           z_values[x][x2] += 9.999f; // We want the altered line several mesh points thick
           #if ENABLED(EXTENSIBLE_UI)
             ExtUI::onMeshUpdate(x, x, z_values[x][x]);
-            ExtUI::onMeshUpdate(x, (x2), z_values[x][x2]);
+            ExtUI::onMeshUpdate(x, x2, z_values[x][x2]);
           #endif
         }
         break;
@@ -806,6 +806,7 @@ void unified_bed_leveling::shift_mesh_height() {
           ExtUI::onMeshUpdate(best.pos, ExtUI::G29_POINT_FINISH);
           ExtUI::onMeshUpdate(best.pos, measured_z);
         #endif
+        TERN_(ProUIex, ProEx.MeshUpdate(best.pos.x, best.pos.y, measured_z));
       }
       SERIAL_FLUSH(); // Prevent host M105 buffer overrun.
 
