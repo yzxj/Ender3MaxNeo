@@ -164,7 +164,7 @@
  */
 #define X_DRIVER_TYPE  TMC2208_STANDALONE  // Ender Configs
 #define Y_DRIVER_TYPE  TMC2208_STANDALONE  // Ender Configs
-#define Z_DRIVER_TYPE  A4988               // Ender Configs
+#define Z_DRIVER_TYPE  TMC2208_STANDALONE  // Ender Configs
 //#define X2_DRIVER_TYPE A4988
 //#define Y2_DRIVER_TYPE A4988
 //#define Z2_DRIVER_TYPE A4988
@@ -176,7 +176,7 @@
 //#define U_DRIVER_TYPE  A4988
 //#define V_DRIVER_TYPE  A4988
 //#define W_DRIVER_TYPE  A4988
-#define E0_DRIVER_TYPE TMC2208_STANDALONE  // Ender Configs // Based on Ender 3 V2/S1
+#define E0_DRIVER_TYPE TMC2208_STANDALONE  // Ender Configs
 //#define E1_DRIVER_TYPE A4988
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
@@ -623,7 +623,7 @@
 // Above this temperature the heater will be switched off.
 // This can protect components from overheating, but NOT from shorts and failures.
 // (Use MINTEMP for thermistor short/failure protection.)
-#define HEATER_0_MAXTEMP 275
+#define HEATER_0_MAXTEMP 300 // JY // sprite
 #define HEATER_1_MAXTEMP 275
 #define HEATER_2_MAXTEMP 275
 #define HEATER_3_MAXTEMP 275
@@ -671,10 +671,10 @@
     #define DEFAULT_Ki_LIST {   1.08,   1.08 }
     #define DEFAULT_Kd_LIST { 114.00, 114.00 }
   #else
-    // Tuned Sprite at 210 deg
-    #define DEFAULT_Kp  15.19
-    #define DEFAULT_Ki   1.29
-    #define DEFAULT_Kd  44.66
+    // JY Tuned Sprite at 200 deg
+    #define DEFAULT_Kp  16.72
+    #define DEFAULT_Ki   1.46
+    #define DEFAULT_Kd  47.83
   #endif
 #endif
 
@@ -758,9 +758,9 @@
   // 120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   // from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
   // Tuned at 55
-  #define DEFAULT_bedKp 236.71
-  #define DEFAULT_bedKi 31.15
-  #define DEFAULT_bedKd 1199.32
+  #define DEFAULT_bedKp 70.59 // JY Tuned
+  #define DEFAULT_bedKi 10.76
+  #define DEFAULT_bedKd 308.73
 
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #endif // PIDTEMPBED
@@ -1195,7 +1195,7 @@
  * Override with M201
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 500, 500, 100, 1000 }  // Ender Configs
+#define DEFAULT_MAX_ACCELERATION      { 800, 800, 100, 1600 }  // Ender Configs // JY
 
 #define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2  // MRiscoC allows higher limits
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -1210,9 +1210,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          500    // X, Y, Z and E acceleration for printing moves  // Ender Configs
-#define DEFAULT_RETRACT_ACCELERATION  800    // E acceleration for retracts  // Ender Configs
-#define DEFAULT_TRAVEL_ACCELERATION   1000    // X, Y, Z acceleration for travel (non printing) moves  // Ender Configs
+#define DEFAULT_ACCELERATION          800    // X, Y, Z and E acceleration for printing moves  // Ender Configs // JY
+#define DEFAULT_RETRACT_ACCELERATION  1200    // E acceleration for retracts  // Ender Configs // JY
+#define DEFAULT_TRAVEL_ACCELERATION   1200    // X, Y, Z acceleration for travel (non printing) moves  // Ender Configs // JY
 
 /**
  * Default Jerk limits (mm/s)
@@ -1252,7 +1252,7 @@
  *   https://blog.kyneticcnc.com/2018/10/computing-junction-deviation-for-marlin.html
  */
 #if DISABLED(CLASSIC_JERK)
-  #define JUNCTION_DEVIATION_MM 0.013 // (mm) Distance from real junction edge
+  #define JUNCTION_DEVIATION_MM 0.04 // (mm) Distance from real junction edge
   #define JD_HANDLE_SMALL_SEGMENTS    // Use curvature estimation instead of just the junction angle
                                       // for small segments (< 1mm) with large junction angles (> 135°).
 #endif
@@ -1490,7 +1490,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -34, -40, -1.72 }  // MRiscoC BLTouch offset for support: https://www.thingiverse.com/thing:4605354 (z-offset = -1.80 mm)  // Manual mesh use the nozzle as probe
+#define NOZZLE_TO_PROBE_OFFSET { -34, -40, -1.80 }  // MRiscoC BLTouch offset for support: https://www.thingiverse.com/thing:4605354 (z-offset = -1.80 mm)  // Manual mesh use the nozzle as probe
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -2106,7 +2106,7 @@
 #endif
 
 // Homing speeds (linear=mm/min, rotational=°/min)
-#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (10*60) }  // MRiscoC Homing speed-up
+#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (8*60) }  // MRiscoC Homing speed-up // JY reduce Z feedrate
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -2223,8 +2223,8 @@
 // Preheat Constants - Up to 10 are supported without changes
 //
 #define PREHEAT_1_LABEL       "PLA"
-#define PREHEAT_1_TEMP_HOTEND 210
-#define PREHEAT_1_TEMP_BED     55
+#define PREHEAT_1_TEMP_HOTEND 200
+#define PREHEAT_1_TEMP_BED     50
 #define PREHEAT_1_TEMP_CHAMBER 35
 #define PREHEAT_1_FAN_SPEED     128 // Value from 0 to 255
 
